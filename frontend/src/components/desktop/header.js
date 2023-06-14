@@ -8,7 +8,7 @@ import {HiInbox} from "react-icons/hi";
 
 function Header () {
     return(
-            <header className="bg-blue-600 text-white  flex justify-between items-center shadow-md px-2 py-1">
+            <header className="bg-white border-t-4 border-blue-600 text-gray-800  flex justify-between items-center shadow-sm px-2 py-1">
                 <div className="bg-gray-200 ">
                     <img alt="" src="../logochatmate.jpg" className=" h-12" />
                     {/* <img alt="" src="../media/logochatmate.jpg" className=" h-12" /> */}

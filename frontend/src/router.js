@@ -1,5 +1,6 @@
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
 // import Layout from "./pages/Layout";
 // import Home from "./pages/Home";
 // import Blogs from "./pages/Blogs";
@@ -11,6 +12,7 @@ import { useMediaQuery } from 'react-responsive'
 import Mobile from "./layout/mobile";
 import Home from "./pages/desktop/home";
 import Login from "./pages/auth/login";
+import UserProfile from "./pages/userprofile/desktop/userProfileDetails";
 
 function AllRouters() {
     const isDesktopOrLaptop = useMediaQuery({query: '(min-width: 768px)'})
@@ -19,12 +21,24 @@ function AllRouters() {
     // const isPortrait = useMediaQuery({ query: '(orientation: portrait)' })
     // const isRetina = useMediaQuery({ query: '(min-resolution: 2dppx)' })
 
+    useEffect(
+      () => {
+          document.body.classList.add( 
+          "bg-gray-100", 
+          // "px-8",
+          "text-sm", 
+          );
+         
+      }, []
+  )
+
   let desktop = <BrowserRouter>
                   <Routes>
                     <Route path="/" element={ <Desktop /> } >
                         <Route index element={<Home />} />
                         <Route path="signup" element={<SignUp />} />
                         <Route path="login" element={<Login />} />
+                        <Route path="profile" element={<UserProfile />} />
                         {/* 
                         <Route path="blogs" element={<Blogs />} />
                         <Route path="blogs" element={<Blogs />} />
