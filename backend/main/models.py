@@ -6,9 +6,11 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_picture = models.ImageField(null=True, default="Notset", blank=True, upload_to="profilepictures/")
     location = models.CharField(max_length=300, default="Notset", null=True, blank=True)
-    dob = models.DateTimeField(blank=True, null=True, default="Notset")
+    dob = models.DateTimeField(blank=True, null=True)
     religion = models.CharField(max_length=300, default="Notset", null=True, blank=True)
     hobbies = models.TextField(default="Notset")
+    whastapp_no = models.CharField(max_length=300, null=True, blank=True)
+    calls_no = models.CharField(max_length=300, null=True, blank=True)
     description = models.TextField(default="Notset")
     comments_on_off = models.BooleanField(default = False)
     restrict_comments = models.IntegerField(default=0)
@@ -70,6 +72,7 @@ class Friends(models.Model):
 class Post(CommonFields):
     uploaded_picture = models.ImageField(null=True, blank=True, upload_to="userpictures/")
     is_profile_pic = models.BooleanField(default = False)
+    is_default_profile_pic = models.BooleanField(default = False)
     video = models.FileField(null=True, blank=True, upload_to="uservideos/")
     number_of_plays = models.IntegerField(default=0)
 

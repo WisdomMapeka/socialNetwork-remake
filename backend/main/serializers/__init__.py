@@ -1,1 +1,1 @@
-from .signupSerializers import SignupSerializer
+from .signupSerializers import SignupSerializer, UserProfileSerializer

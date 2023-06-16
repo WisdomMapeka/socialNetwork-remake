@@ -1,1 +1,1 @@
-from .signupViewsets import SignupUserView
+from .signupViewsets import SignupUserView, UserProfileView

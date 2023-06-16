@@ -2,14 +2,17 @@ import { Link } from "react-router-dom"
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { getAccessRfreshUserValues } from "../../../../../utils";
 
 
 function EditContacts(){
-    const [form, setForm] = useState({first_name : "annonymouse",
-        last_name :"",password :"",
-        password2 :"",username :"annonymouse"});
+    let userValues = getAccessRfreshUserValues()
+    const [form, setForm] = useState({whastapp_no : userValues.user.whastapp_no,
+                                        calls_no :userValues.user.calls_no,
+                                        location :userValues.user.location});
     const [Error, setError] = useState("");
     const navigate = useNavigate();
+    
 
     const handleSubmit = (event) => {
     console.log("handleSubmit run")
@@ -19,10 +22,10 @@ function EditContacts(){
     }
 
     const data = {
-    first_name : form.first_name.trim(),
-    last_name :form.last_name.trim(),
-    username :form.username.trim()
-    }
+        whastapp_no : form.whastapp_no,
+        calls_no :form.calls_no,
+        location :form.location
+        }
 
     let BASE_URL_DEV = process.env.REACT_APP_ASE_URL_DEV;
     const headers_values = {
@@ -33,14 +36,14 @@ function EditContacts(){
     }
 
     const send_form = () => {
-    axios.post("/signup/", data, headers_values)
+    axios.patch(`/userprofile/${userValues.user.user_id}/`, data, headers_values)
     .then((res) => {
-    localStorage.setItem("auth", JSON.stringify({
-    access: res.data.access,
-    refresh: res.data.refresh,
-    user: res.data.user,
-    }));
-    navigate("/user-additional-information/")
+    // localStorage.setItem("auth", JSON.stringify({
+    // access: res.data.access,
+    // refresh: res.data.refresh,
+    // user: res.data.user,
+    // }));
+    // navigate("/user-additional-information/")
     })
     .catch((err) => {
     console.log(err.request.response)
@@ -57,13 +60,13 @@ return (
                 <div className="md:flex justify-between">
                     <div className="mb-4 md:mr-6">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="first_name">whastapp</label>
-                        <input onChange={(e) => setForm({...form, "first_name":e.currentTarget.value})} className="w-full px-8 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                        <input onChange={(e) => setForm({...form, "whastapp_no":e.currentTarget.value})} className="w-full px-8 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
                         type="text" id="first_name" name="first_name" placeholder="First Name" />
                     </div>
 
                     <div className="mb-4 md:ml-6">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="last_name">calls</label>
-                        <input onChange={(e) => setForm({...form, "last_name":e.currentTarget.value})} className="w-full px-8 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                        <input onChange={(e) => setForm({...form, "calls_no":e.currentTarget.value})} className="w-full px-8 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
                         type="text" id="last_name" name="last_name" placeholder="Last Name" />
                     </div>
                 </div>
@@ -76,7 +79,7 @@ return (
                         location
                             <span className=" text-red-600 italic">{Error.username}</span>
                         </label>
-                        <input onChange={(e) => setForm({...form, "username":e.currentTarget.value})} className="w-full px-8 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                        <input onChange={(e) => setForm({...form, "location":e.currentTarget.value})} className="w-full px-8 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
                         type="text" id="username" name="username" placeholder="User Name or Phone Number" />
                     </div>
                 </div>

@@ -1,14 +1,13 @@
 import React, {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
-// import { HeaderDesktop } from "../../Layout/Layout";
+
 
 function SignUp(){
   const [form, setForm] = useState({email :"NotSet",first_name : "annonymouse",
                                     last_name :"",password :"",
                                     password2 :"",username :"annonymouse"});
   const [Error, setError] = useState("");
-  const [validated, setValidated] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = (event) => {
@@ -39,8 +38,6 @@ function SignUp(){
       'Content-Type': 'application/json',
     }}
 const send_form = () => {
-  console.log("run send_form")
-    // -------------------------
     axios.post("/signup/", data, headers_values)
     .then((res) => {
       // store user data in the browser-----
@@ -51,18 +48,11 @@ const send_form = () => {
         user: res.data.user,
       }));
       navigate("/user-additional-information/")
-      // -----------------------------------
     })
     .catch((err) => {
       console.log(err.request.response)
       setError(JSON.parse(err.request.response))
-      // if( Error.location[0] ==="ndefined"){
-      //     console.log("Something went wrong , try again")
-      // }else{
-      //     console.log(Error.location[0])
-      // }
     })
-    // ---------------------------------------
 }
  
 
@@ -70,8 +60,6 @@ const send_form = () => {
     return (
        
        <>
-       {/* <HeaderDesktop /> */}
-       
         <div className="bg-gray-100">
         <div className="container mx-auto py-8">
           <h1 className="text-2xl font-bold mb-6 text-center">Sign Up</h1>

@@ -3,15 +3,19 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import EditProfilePic from "./editProfilePic";
+import { getAccessRfreshUserValues } from "../../../../../utils";
 
 
 
 function EditPersonalInformation(){
-    const [form, setForm] = useState({email :"NotSet",first_name : "annonymouse",
-                                    last_name :"",password :"",
-                                    password2 :"",username :"annonymouse"});
+    let userValues = getAccessRfreshUserValues()
+    const [form, setForm] = useState({email :userValues.user.email,
+                                    first_name : userValues.user.first_name,
+                                    last_name : userValues.user.last_name,
+                                    username :userValues.user.username});
     const [Error, setError] = useState("");
     const navigate = useNavigate();
+   
 
     const handleSubmit = (event) => {
             console.log("handleSubmit run")
@@ -24,8 +28,6 @@ function EditPersonalInformation(){
             email :form.email.trim(),
             first_name : form.first_name.trim(),
             last_name :form.last_name.trim(),
-            password :form.password.trim(),
-            password2 :form.password2.trim(),
             username :form.username.trim()
         }
 
@@ -38,7 +40,7 @@ function EditPersonalInformation(){
         }
 
     const send_form = () => {
-            axios.post("/signup/", data, headers_values)
+            axios.patch(`/signup/${userValues.user.id}/`, data, headers_values)
             .then((res) => {
                 localStorage.setItem("auth", JSON.stringify({
                 access: res.data.access,
