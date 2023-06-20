@@ -2,12 +2,14 @@ import { Link } from "react-router-dom"
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { getAccessRfreshUserValues } from "../../../../../utils";
 
 
 function EditBio(){
-    const [form, setForm] = useState({first_name : "annonymouse",
-        last_name :"",password :"",
-        password2 :"",username :"annonymouse"});
+    let userValues = getAccessRfreshUserValues()
+    const [form, setForm] = useState({description : userValues.user.description,
+                                    hobbies :userValues.user.hobbies, 
+                                    dob :userValues.user.dob});
     const [Error, setError] = useState("");
     const navigate = useNavigate();
 
@@ -19,9 +21,9 @@ function EditBio(){
     }
 
     const data = {
-    first_name : form.first_name.trim(),
-    last_name :form.last_name.trim(),
-    username :form.username.trim()
+    description : form.description.trim(),
+    hobbies :form.hobbies.trim(),
+    dob :form.dob
     }
 
     let BASE_URL_DEV = process.env.REACT_APP_ASE_URL_DEV;
@@ -33,13 +35,11 @@ function EditBio(){
     }
 
     const send_form = () => {
-    axios.post("/signup/", data, headers_values)
+    axios.patch(`/userprofile/${userValues.user.user}/`, data, headers_values)
     .then((res) => {
-    localStorage.setItem("auth", JSON.stringify({
-    access: res.data.access,
-    refresh: res.data.refresh,
-    user: res.data.user,
-    }));
+        let auth = JSON.parse(localStorage.getItem("auth"));
+        auth["user"] = res.data.user;
+        localStorage.setItem("auth", JSON.stringify(auth))
     navigate("/user-additional-information/")
     })
     .catch((err) => {
@@ -56,15 +56,15 @@ return (
             <form onSubmit={handleSubmit} className="w-full max-w-[700px] mx-auto bg-white p-8 rounded-md shadow-md border-t-4 border-blue-600">
                 <div className="md:flex justify-between">
                     <div className="mb-4 md:mr-6">
-                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="first_name">D.O.B</label>
-                        <input onChange={(e) => setForm({...form, "first_name":e.currentTarget.value})} className="w-full px-8 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-                        type="text" id="first_name" name="first_name" placeholder="First Name" />
+                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">Description:</label>
+                        <input onChange={(e) => setForm({...form, "description:":e.currentTarget.value})} className="w-full px-8 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                        type="text" id="description" name="description" placeholder="description" />
                     </div>
 
                     <div className="mb-4 md:ml-6">
-                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="last_name">hobies</label>
-                        <input onChange={(e) => setForm({...form, "last_name":e.currentTarget.value})} className="w-full px-8 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-                        type="text" id="last_name" name="last_name" placeholder="Last Name" />
+                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="hobbies">hobies</label>
+                        <input onChange={(e) => setForm({...form, "hobbies":e.currentTarget.value})} className="w-full px-8 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                        type="text" id="hobbies" name="hobbies" placeholder="hobbies" />
                     </div>
                 </div>
 
@@ -72,12 +72,12 @@ return (
 
                 <div className="md:flex justify-between">
                     <div className="mb-4 md:mr-6">
-                        <label className="flex justify-between text-gray-700 text-sm font-bold mb-2" htmlFor="username">
-                        Description
+                        <label className="flex justify-between text-gray-700 text-sm font-bold mb-2" htmlFor="dob">
+                        dob
                             <span className=" text-red-600 italic">{Error.username}</span>
                         </label>
-                        <input onChange={(e) => setForm({...form, "username":e.currentTarget.value})} className="w-full px-8 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-                        type="text" id="username" name="username" placeholder="User Name or Phone Number" />
+                        <input onChange={(e) => setForm({...form, "dob":e.currentTarget.value})} className="w-full px-8 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                        type="text" id="dob" name="dob" placeholder="dob" />
                     </div>
                 </div>
 

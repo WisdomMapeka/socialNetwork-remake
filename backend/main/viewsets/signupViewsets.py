@@ -1,6 +1,5 @@
 from rest_framework.response import Response
-from rest_framework import viewsets
-from rest_framework import status
+from rest_framework import viewsets, status
 from rest_framework_simplejwt.tokens import RefreshToken
 from ..serializers.signupSerializers import SignupSerializer, UserProfileSerializer
 from main.models import UserProfile, Post
@@ -30,22 +29,9 @@ class SignupUserView(viewsets.ModelViewSet):
             pic = ""
  
         create_userprofile = UserProfile.objects.create(user=user, profile_picture = pic)
-        profile_data = {'id2': create_userprofile.id, 'user_id2': create_userprofile.user.id, 
-                        'profile_picture': request.build_absolute_uri(create_userprofile.profile_picture.url), 
-                        'whastapp_no':create_userprofile.whastapp_no,
-                        'calls_no':create_userprofile.calls_no,
-                        'location': create_userprofile.location, 'dob': create_userprofile.dob, 
-                        'religion': create_userprofile.religion, 
-                        'hobbies': create_userprofile.hobbies, 
-                        'description': create_userprofile.description, 
-                        'date_created': create_userprofile.date_created}
-        
-        profile = self.serializer_class_profile(data= profile_data)
-        profile.is_valid()
+        profile = self.serializer_class_profile(create_userprofile, context={'request': request})
         profile_reurn_data = profile.data
         # -------------------------------------------------------
-
-    
         tokens = RefreshToken.for_user(user)
         token_data = {
             "access":str(tokens.access_token),
@@ -54,24 +40,20 @@ class SignupUserView(viewsets.ModelViewSet):
 
         retuned_data = serializer.data
         retuned_data.pop("password")
-        retuned_data["user_id"] = user.id
+        retuned_data["user"] = user.id
 
         final_data = retuned_data.copy()
         final_data.update(profile_reurn_data)
 
-
         res = Response({"user":final_data,   "access":token_data["access"], 
                         "refresh":token_data["refresh"]},
-                        status=status.HTTP_201_CREATED, 
-                                    )
-        
+                        status=status.HTTP_201_CREATED, ) 
         return res
     
 
     def update(self, request, pk=None, *args, **kwargs):
         instance = self.get_object()
         data = request.data
-
         serializer = self.serializer_class(instance=instance,
                                         data=data, 
                                         partial=True)
@@ -84,18 +66,7 @@ class SignupUserView(viewsets.ModelViewSet):
         # -------------------------------------------------------------------------
         try:
             user_profile = UserProfile.objects.get(user=user)
-            profile_data = {'id2': user_profile.id, 'user_id2': user_profile.user.id, 
-                            'whastapp_no':user_profile.whastapp_no,
-                            'calls_no':user_profile.calls_no,
-                            'profile_picture': request.build_absolute_uri(user_profile.profile_picture.url), 
-                            'location': user_profile.location, 'dob': user_profile.dob, 
-                            'religion': user_profile.religion, 
-                            'hobbies': user_profile.hobbies, 
-                            'description': user_profile.description, 
-                            'date_created': user_profile.date_created}
-            
-            profile = self.serializer_class_profile(data= profile_data)
-            profile.is_valid()
+            profile = self.serializer_class_profile(user_profile, context={'request': request})
             profile_reurn_data = profile.data
         except UserProfile.DoesNotExist:
         # ----------------------------------------------------------------------------------
@@ -109,22 +80,9 @@ class SignupUserView(viewsets.ModelViewSet):
                 pic = ""
             
             create_userprofile = UserProfile.objects.create(user=user, profile_picture = pic)
-            profile_data = {'id2': create_userprofile.id, 'user_id2': create_userprofile.user.id, 
-                            'profile_picture': request.build_absolute_uri(create_userprofile.profile_picture.url), 
-                            'whastapp_no':create_userprofile.whastapp_no,
-                            'calls_no':create_userprofile.calls_no,
-                            'location': create_userprofile.location, 'dob': create_userprofile.dob, 
-                            'religion': create_userprofile.religion, 
-                            'hobbies': create_userprofile.hobbies, 
-                            'description': create_userprofile.description, 
-                            'date_created': create_userprofile.date_created}
-            
-            profile = self.serializer_class_profile(data= profile_data)
-            profile.is_valid()
+            profile = self.serializer_class_profile(create_userprofile, context={'request': request})
             profile_reurn_data = profile.data
             # ----------------------------------------------------------
-
-
         tokens = RefreshToken.for_user(user)
         token_data = {
             "access":str(tokens.access_token),
@@ -133,16 +91,14 @@ class SignupUserView(viewsets.ModelViewSet):
 
         retuned_data = serializer.data
         retuned_data.pop("password")
-        retuned_data["user_id"] = user.id
+        retuned_data["user"] = user.id
 
         final_data = retuned_data.copy()
         final_data.update(profile_reurn_data)
 
         res = Response({"user":final_data, "access":token_data["access"], 
                         "refresh":token_data["refresh"]},
-                        status=status.HTTP_201_CREATED, 
-                                    )
-        
+                        status=status.HTTP_201_CREATED, )
         return res
 
 
@@ -154,7 +110,6 @@ class UserProfileView(viewsets.ModelViewSet):
     serializer_class_signup = SignupSerializer
     http_method_names = ['post', 'patch',]
     lookup_field = "user"
-
 
     def update(self, request, pk=None, *args, **kwargs):
         instance = self.get_object()
@@ -177,6 +132,4 @@ class UserProfileView(viewsets.ModelViewSet):
 
         final_data = data2.copy()
         final_data.update(retuned_data)
-
-    
         return Response({"user":final_data },  status=status.HTTP_201_CREATED)

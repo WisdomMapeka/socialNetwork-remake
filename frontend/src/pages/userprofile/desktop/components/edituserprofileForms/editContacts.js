@@ -36,13 +36,11 @@ function EditContacts(){
     }
 
     const send_form = () => {
-    axios.patch(`/userprofile/${userValues.user.user_id}/`, data, headers_values)
+    axios.patch(`/userprofile/${userValues.user.user}/`, data, headers_values)
     .then((res) => {
-    // localStorage.setItem("auth", JSON.stringify({
-    // access: res.data.access,
-    // refresh: res.data.refresh,
-    // user: res.data.user,
-    // }));
+    let auth = JSON.parse(localStorage.getItem("auth"));
+    auth["user"] = res.data.user;
+    localStorage.setItem("auth", JSON.stringify(auth))
     // navigate("/user-additional-information/")
     })
     .catch((err) => {
