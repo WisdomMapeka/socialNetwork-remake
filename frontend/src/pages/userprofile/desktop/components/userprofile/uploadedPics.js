@@ -1,4 +1,4 @@
-import { data } from "../../../../../components/tesData";
+import data from "../../../../../components/tesData";
 import { Link } from "react-router-dom";
 
 function UploadedPics(){

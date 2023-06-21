@@ -42,7 +42,7 @@ function ListOfYourFriends() {
   let[friendlistdata, setFriendlistdata] = useState({});
 
 
-  let BASE_URL_DEV = process.env.REACT_APP_ASE_URL_DEV;
+  let BASE_URL_DEV = process.env.REACT_APP_BASE_URL_DEV;
 
   let  header_values = {
     baseURL: BASE_URL_DEV,
@@ -55,27 +55,19 @@ function ListOfYourFriends() {
     }
 
 
-// console.log(data)
-// console.log(userValues.access)
-
   useEffect(
-    // -------------------------
       () => {
-        axios.get("/friends", header_values)
-        .then((res) => {setFriendlistdata(res.data.friens_list)})
+         axios.get("/listretrieveuserprofiles", header_values)
+        .then((res) => {setFriendlistdata( res.data)})
         .catch((err) => {
                 console.log(err.request.response)
                 // refreshAccessToken()
             }
         )
       }
-    // ------------------------
     ,[]
   )
 
-  // console.log("-------friend list -----------------")
-  // console.log(friendlistdata)
-  // console.log("-------friend list -----------------")
 
 
   const handleOnclickOnNewMembers = (memberid) => {
@@ -87,9 +79,6 @@ function ListOfYourFriends() {
     }
   }
 
-  if (friendlistdata.length> 0) {
-    friendlistdata = friendlistdata.filter(item => !(item.friend_details.username === undefined))
-  }
 
 //  console.log(friendlistdata)
   return (
@@ -103,14 +92,14 @@ function ListOfYourFriends() {
           {friendlistdata.length && friendlistdata.map((item) => {
             
             return(
-            <div key={item.id} className='w-full  px-2 mt-1 shadow  cursor-pointer hover:scale-105 ease-in-out duration-300' >
+            <div key={item.user.id} className='w-full  px-2 mt-1 shadow  cursor-pointer hover:scale-105 ease-in-out duration-300' >
                 <div className='flex my-2 w-full' onClick={() => {handleOnclickOnNewMembers(item.id)}}>
                     <div className='h-[30px] w-[30px] flex items-center justify-center rounded-[30px] border border-solid border-gray-900 p-0 overflow-hidden bg-green-700'>
-                        <img src={item.friend_details.profile_picture} alt='/' className='h-[95%] w-[95%] rounded-[95%]'/>
+                        <img src={item.user.profile_picture} alt='/' className='h-[95%] w-[95%] rounded-[95%]'/>
                     </div>
                     <div className='break-all ml-3'>
-                        <div className='text-xs'>{item.friend_details.first_name + " " + item.friend_details.last_name} </div>
-                        <div className='text-xs'>{item.friend_details.location}</div>
+                        <div className='text-xs'>{item.user.first_name + " " + item.user.last_name} </div>
+                        <div className='text-xs'>{item.user.location}</div>
                         {/* <div className='text-xs'>
                             <button class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-1 px-12 border-b-2 border-blue-700 hover:border-blue-500 rounded">
                                 send request
@@ -121,8 +110,6 @@ function ListOfYourFriends() {
 
                 { YourFriends && memberId === item.id ? <YourFriends data = {item} memberId = {memberId}/>  : ""}
             </div>
-           
-
             )
           
             

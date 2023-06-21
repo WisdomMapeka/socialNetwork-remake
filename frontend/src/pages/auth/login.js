@@ -29,9 +29,9 @@ function Login(){
     const handleSubmit = () =>{
         axios.post("/login/", data, header_values)
         .then((res) => {
-            console.log(res.request.responseText)
+            // console.log(res.request.responseText)
             setErrors({...errors, "error":JSON.parse(res.request.responseText)});
-            console.log(res.data.user);
+            // console.log(res.data.user);
             // ----------------------------------------------------------------
             
               localStorage.setItem("auth", JSON.stringify({
@@ -47,7 +47,7 @@ function Login(){
             // console.log(err.request.data.error)
         })
     }
-    console.log(errors.error.error)
+    // console.log(errors.error.error)
     // console.log(data);
 
     return (

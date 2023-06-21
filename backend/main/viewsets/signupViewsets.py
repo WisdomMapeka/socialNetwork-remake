@@ -7,7 +7,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 
 
-# --------Register User View -----------------------
+# --------SignupUserView User View -----------------------
 class SignupUserView(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = SignupSerializer
@@ -59,10 +59,12 @@ class SignupUserView(viewsets.ModelViewSet):
                                         partial=True)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
-        
-        # when we update the user data, we also want to retuen the profile data of this user
-        # that is what this code does, if it happens that by some mistake the profile data has
-        # been deleted, we try to recreate it with the code that follows the try
+        # -----------------------------NOTES-----------------------------------
+        """
+        when we update the user data, we also want to retuen the profile data of this user
+        that is what this code does, if it happens that by some mistake the profile data has
+        been deleted, we try to recreate it with the code that follows the try
+        """
         # -------------------------------------------------------------------------
         try:
             user_profile = UserProfile.objects.get(user=user)
@@ -102,14 +104,20 @@ class SignupUserView(viewsets.ModelViewSet):
         return res
 
 
-
-# --------Register User View -----------------------
+# ----------------------------NOTES----------------------------------------------
+"""
+This view set is reserved for updating the user profile and then returning the data
+only. For listing all the user and even retreaving a single user, such tasks are 
+assigned to another viewset
+"""
+# -------------------------UserProfileView-----------------------------------
 class UserProfileView(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
     serializer_class_signup = SignupSerializer
-    http_method_names = ['post', 'patch',]
+    http_method_names = ['post', 'patch', 'get', ]
     lookup_field = "user"
+
 
     def update(self, request, pk=None, *args, **kwargs):
         instance = self.get_object()

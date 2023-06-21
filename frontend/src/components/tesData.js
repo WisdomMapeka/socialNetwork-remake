@@ -1,4 +1,4 @@
-export const data = [
+const data = [
     {
       id: 1,
       img: 'https://images.unsplash.com/photo-1547005327-ef75a6961556?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8b2NlYW58ZW58MHwyfDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60',
@@ -49,3 +49,5 @@ export const data = [
     },
   ];
   
+
+  export default data
