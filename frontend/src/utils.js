@@ -3,53 +3,8 @@ import {BiLogOut} from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect, useRef } from 'react';
 
-function CheckUserLoginStatus(){
-//   console.log("CheckuserLoginstatus run");
-  try {
-    const data = JSON.parse(localStorage.getItem("auth"))  ;
-    // console.log(data.access)
-    // console.log(localStorage.length)
-    if (data.access && data.refresh){
-        return true
-     }
-    
-  } catch (error) {
-    // console.log("User is logged out. If you want more information about the error. Console.log error on utils file")
-    return false
-  }
-  
-   
-    // console.log(getuser.username)
-}
 
 
-function Logout(){
-    const navigate = useNavigate();
-    // const getuser = JSON.parse(localStorage.getItem("auth")).user;
-    // const data = getuser.username;
-    const handleLogingUserOut = () => {
-      let BASE_URL_DEV = process.env.REACT_APP_ASE_URL_DEV;
-
-      let  header_values = {
-        baseURL: BASE_URL_DEV,
-        }
-        const data = {}
-        
-        axios.post("/logout/", data, header_values)
-        .then((res) => {
-            // console.log(res);
-            updateUserOnlineStatus(false)
-            localStorage.removeItem("auth");
-            navigate("/");
-        })
-        .catch((err) => {
-            console.log(err);
-        })
-    }
-    
-
-    return  <li onClick={handleLogingUserOut} className="p-2 border-r">Logout<BiLogOut className='inline-block ml-2' /></li>
-}
 
 const getAccessRfreshUserValues = () =>{
     // console.log("get access run---------------------")
@@ -130,9 +85,7 @@ const useInterval = (callback, delay) => {
 
 
 
-export {CheckUserLoginStatus, 
-        Logout, 
-        getAccessRfreshUserValues, 
+export {getAccessRfreshUserValues, 
         refreshAccessToken,
         useInterval,
         updateUserOnlineStatus};

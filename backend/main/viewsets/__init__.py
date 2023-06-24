@@ -1,3 +1,4 @@
 from .signupViewsets import SignupUserView, UserProfileView
 from .loginoutViewsets import LoginView
 from .listRetrieveUserprofilesViewsets import ListRetrieveUserProfilesView
+from .loginoutViewsets import LogoutView

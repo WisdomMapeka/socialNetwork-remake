@@ -9,7 +9,7 @@ function Login(){
     const[errors, setErrors] = useState({"error":""})
     const navigate = useNavigate()
 
-    let BASE_URL_DEV = process.env.REACT_APP_ASE_URL_DEV;
+    let BASE_URL_DEV = process.env.REACT_APP_BASE_URL_DEV;
 
     let  header_values = {
       baseURL: BASE_URL_DEV,
@@ -27,6 +27,7 @@ function Login(){
     }
 
     const handleSubmit = () =>{
+        console.log(BASE_URL_DEV)
         axios.post("/login/", data, header_values)
         .then((res) => {
             // console.log(res.request.responseText)

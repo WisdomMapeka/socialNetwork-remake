@@ -2,7 +2,7 @@ import { useState } from "react"
 import Messages from "./homepageCol1/Messages"
 import ListOfYourFriends from "./homepageCol1/ListOfYourFriends"
 
-function HomePageCol1(){
+function HomePageCol3(){
     let[show, setShow] = useState("friends")
     return(
         <div className="p-3">
@@ -18,4 +18,4 @@ function HomePageCol1(){
     )
 }
 
-export default HomePageCol1
+export default HomePageCol3

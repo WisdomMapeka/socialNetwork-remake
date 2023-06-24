@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import RecommendedPeople from "../../components/desktop/RecommendedPeople";
 import HomePageCol1 from "./components/homepageCol1";
+import HomePageCol2 from "./components/homepageCol2";
+import HomePageCol3 from "./components/homepageCol3";
 function Home(){
 
     return(
@@ -10,11 +11,11 @@ function Home(){
             <HomePageCol1 />
         </div>
         <div className="w-[40%] bg-white mt-3">
-            <RecommendedPeople />
+            <HomePageCol2 />
         </div>
         <div className="w-[28%] bg-white mt-3">
  
-           col3 
+            <HomePageCol3 />
         </div>
 
     </div>

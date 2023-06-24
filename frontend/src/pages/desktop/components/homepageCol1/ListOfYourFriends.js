@@ -6,26 +6,24 @@ import {RiMessengerLine} from 'react-icons/ri';
 import axios from 'axios';
 
 
-function YourFriends(props){ 
+function FriendDropDown(props){ 
   // let userValues = getAccessRfreshUserValues();
-
   const selectedUser = props.data;
   const navigate = useNavigate()
 
   const handleChat = () => {
-    localStorage.setItem("chatParticipants", JSON.stringify(selectedUser))
-    navigate("/messages")
+    console.log("handleChat Run")
   } 
   
   return (
     // <span></span>
-        <div key={selectedUser.id} className='ml-3 mb-2 px-2 mt-1 py-2  cursor-pointer hover:scale-105 ease-in-out duration-300'>
+        <div key={selectedUser.user.id} className='ml-3 mb-2 px-2 mt-1 py-2  cursor-pointer hover:scale-105 ease-in-out duration-300'>
             <div className='flex h-[200px] w-[200px] mb-3 pb-3 flex-col my-2 shadow-md rounded-xl overflow-hidden'>
                 <div className='flex items-center justify-center p-0 overflow-hidden'>
-                    <img src={selectedUser.friend_details.profile_picture} alt='/' className=' w-full rounded-xl'/>
+                    <img src={selectedUser.user.profile_picture} alt='/' className=' w-full rounded-xl'/>
                 </div>
                 <div className='break-all '>
-                    <div className='text-xs mx-2 my-1 shadow text-center p-1 rounded font-semibold cursor-pointer'>{selectedUser.friend_details.first_name + " " + selectedUser.friend_details.last_name} </div>  
+                    <div className='text-xs mx-2 my-1 shadow text-center p-1 rounded font-semibold cursor-pointer'>{selectedUser.user.first_name + " " + selectedUser.user.last_name} </div>  
                     <div onClick={handleChat} className='text-xs mx-2 my-1 shadow text-center rounded bg-blue-500 text-white cursor-pointe p-1'>  send message <RiMessengerLine className='inline-block ml-2'/></div>
                     {/* <div className='text-xs mx-2 my-1 shadow text-center p-1 rounded bg-blue-500 text-white cursor-pointer'>add friend <FaUserFriends className='inline-block  ml-2'/></div> */}
                 </div>
@@ -36,13 +34,14 @@ function YourFriends(props){
 
 function ListOfYourFriends() {
  
-  const[yourFriends, setYourFriends] = useState(false);
-  const[memberId, setMemberId] = useState("");
+  const[show, setShow] = useState(false);
+  const[user, setUser] = useState("");
   // const userValues = getAccessRfreshUserValues();
   let[friendlistdata, setFriendlistdata] = useState({});
 
 
   let BASE_URL_DEV = process.env.REACT_APP_BASE_URL_DEV;
+  console.log(BASE_URL_DEV)
 
   let  header_values = {
     baseURL: BASE_URL_DEV,
@@ -70,15 +69,17 @@ function ListOfYourFriends() {
 
 
 
-  const handleOnclickOnNewMembers = (memberid) => {
-    setMemberId(memberid);
-    if (yourFriends === false) {
-      setYourFriends(true)
+  const handleOnclick = (user) => {
+    setUser(user);
+    if (show === false) {
+      setShow(true)
     } else {
-      setYourFriends(false)
+      setShow(false)
     }
   }
 
+  console.log(show)
+  console.log(user)
 
 //  console.log(friendlistdata)
   return (
@@ -92,8 +93,8 @@ function ListOfYourFriends() {
           {friendlistdata.length && friendlistdata.map((item) => {
             
             return(
-            <div key={item.user.id} className='w-full  px-2 mt-1 shadow  cursor-pointer hover:scale-105 ease-in-out duration-300' >
-                <div className='flex my-2 w-full' onClick={() => {handleOnclickOnNewMembers(item.id)}}>
+            <div key={item.user.user} className='w-full  px-2 mt-1 shadow  cursor-pointer hover:scale-105 ease-in-out duration-300' >
+                <div className='flex my-2 w-full' onClick={() => {handleOnclick(item)}}>
                     <div className='h-[30px] w-[30px] flex items-center justify-center rounded-[30px] border border-solid border-gray-900 p-0 overflow-hidden bg-green-700'>
                         <img src={item.user.profile_picture} alt='/' className='h-[95%] w-[95%] rounded-[95%]'/>
                     </div>
@@ -108,7 +109,7 @@ function ListOfYourFriends() {
                     </div>
                 </div>
 
-                { YourFriends && memberId === item.id ? <YourFriends data = {item} memberId = {memberId}/>  : ""}
+                { show === true && item.user.user === user.user.user ? <FriendDropDown data = {user} />  : ""}
             </div>
             )
           
