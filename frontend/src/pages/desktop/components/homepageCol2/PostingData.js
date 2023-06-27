@@ -6,6 +6,8 @@ import { HiDocumentDuplicate } from "react-icons/hi";
 import { MdOutlineAudiotrack } from "react-icons/md";
 import { getAccessRfreshUserValues } from "../../../../utils";
 import axios from "axios";
+import globalVariables from "../../../../data/globalVariables";
+
 
 
 function PostingData(){
@@ -41,7 +43,8 @@ function PostingData(){
     } 
 
 
-    let BASE_URL_DEV = process.env.REACT_APP_ASE_URL_DEV;
+    // let BASE_URL_DEV = process.env.REACT_APP_ASE_URL_DEV;
+    let BASE_URL_DEV = globalVariables.BASE_URL_DEV
 
     let  header_values = {
         baseURL: BASE_URL_DEV,

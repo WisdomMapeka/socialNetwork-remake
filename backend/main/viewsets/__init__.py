@@ -3,3 +3,4 @@ from .loginoutViewsets import LoginView
 from .listRetrieveUserprofilesViewsets import ListRetrieveUserProfilesView
 from .loginoutViewsets import LogoutView
 from .updateUserOnlineStatusViewsets import updateUserOnlineStatusView
+from .postsViewsets import PostView

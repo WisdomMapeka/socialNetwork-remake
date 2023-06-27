@@ -8,14 +8,11 @@ from collections import OrderedDict
 
 class ListRetrieveUserProfilesSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
-        print("-------------------")
         try:
-            print(instance.userprofile)
             prof = UserProfileSerializer(instance.userprofile, context = self.context)
             data = OrderedDict(prof.data)
         except User.userprofile.RelatedObjectDoesNotExist:
             data = OrderedDict({})
-            print('nothing. ------', instance)
 
         ret = super().to_representation(instance)
         ret.pop("password")

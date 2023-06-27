@@ -11,6 +11,7 @@ router.register(r'listretrieveuserprofiles', listRetrieveUserprofilesViewsets.Li
 router.register(r'login', loginoutViewsets.LoginView, 'login')
 router.register(r'logout', loginoutViewsets.LogoutView, 'logout')
 router.register(r'updateuseronlinestatus', updateUserOnlineStatusViewsets.updateUserOnlineStatusView, 'updateuseronlinestatus')
+router.register(r'posts', postsViewsets.PostView, 'posts')
 
 
 urlpatterns = [
