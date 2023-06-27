@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import HomePageCol1 from "./components/homepageCol1";
 import HomePageCol2 from "./components/homepageCol2";
 import HomePageCol3 from "./components/homepageCol3";

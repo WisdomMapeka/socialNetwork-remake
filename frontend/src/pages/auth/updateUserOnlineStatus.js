@@ -1,18 +1,15 @@
-import axios
- from "axios";
+import axios from "axios";
+import { getAccessRfreshUserValues } from "../../utils";
+import globalVariables from "../../data/globalVariables";
 const updateUserOnlineStatus = (online_status) =>{
-    // console.log("utils.js updateUserOnlineStatus -------------------")
-    // const userValues = getAccessRfreshUserValues();
+    const userValues = getAccessRfreshUserValues();
     const data  = {
-    //   user: userValues.user.user,
+      user: userValues.user.user,
       is_online : online_status
     }
-    
-    // console.log(userValues)
-    // console.log(data)
   
-     let BASE_URL_DEV = process.env.REACT_APP_ASE_URL_DEV;
-  
+    //  let BASE_URL_DEV = process.env.REACT_APP_ASE_URL_DEV;
+    let BASE_URL_DEV = globalVariables.BASE_URL_DEV
      let  header_values = {
       baseURL: BASE_URL_DEV,
       }

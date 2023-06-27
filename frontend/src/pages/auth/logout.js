@@ -1,36 +1,36 @@
 import axios from "axios";
 import {BiLogOut} from "react-icons/bi";
-import { useNavigate } from "react-router-dom";
-import React, { useState, useEffect, useRef } from 'react';
-import { Link } from "react-router-dom";
+import { useNavigate , Link} from "react-router-dom";
+import checkUserLoginStatus from "./checkLoginStatus";
+import updateUserOnlineStatus from "./updateUserOnlineStatus";
 
 function Logout(){
     const navigate = useNavigate();
-    const getuser = JSON.parse(localStorage.getItem("auth")).user;
-    const data = getuser.username;
+    let BASE_URL_DEV = process.env.REACT_APP_BASE_URL_DEV;
+
     const handleLogingUserOut = () => {
         console.log("logout run")
-    //   let BASE_URL_DEV = process.env.REACT_APP_ASE_URL_DEV;
+        console.log(BASE_URL_DEV)
+        let  header_values = {
+            baseURL: BASE_URL_DEV,
+            }
+            const data = {}
+            
+            axios.post("/logout/", data, header_values)
+            .then((res) => {
+                console.log(res);
+                updateUserOnlineStatus(false)
+                localStorage.removeItem("auth");
+                navigate("/login/");
+            })
+            .catch((err) => {
+                console.log(err);
+            })
 
-    //   let  header_values = {
-    //     baseURL: BASE_URL_DEV,
-    //     }
-    //     const data = {}
-        
-    //     axios.post("/logout/", data, header_values)
-    //     .then((res) => {
-    //         console.log(res);
-    //         updateUserOnlineStatus(false)
-    //         localStorage.removeItem("auth");
-    //         navigate("/");
-    //     })
-    //     .catch((err) => {
-    //         console.log(err);
-    //     })
     }
-    
+    let logout = <Link onClick={handleLogingUserOut} ><li className="p-2 border-r">Logout<BiLogOut className='inline-block ml-2' /></li></Link>    
 
-    return <Link onClick={handleLogingUserOut} >Logout<BiLogOut className='inline-block ml-2' /></Link>
+    return checkUserLoginStatus() === true ? logout : ""
 
 }
 

@@ -1,25 +1,24 @@
 import { Link, useNavigate  } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
+import updateUserOnlineStatus from "./updateUserOnlineStatus";
+import globalVariables from "../../data/globalVariables";
 import Header from "../../components/desktop/header";
-// import { updateUserOnlineStatus } from "../../utils";
 
 function Login(){
     const[form, setForm] = useState({});
     const[errors, setErrors] = useState({"error":""})
     const navigate = useNavigate()
 
-    let BASE_URL_DEV = process.env.REACT_APP_BASE_URL_DEV;
+    // let BASE_URL_DEV = process.env.REACT_APP_BASE_URL_DEV;
+    let BASE_URL_DEV = globalVariables.BASE_URL_DEV
 
     let  header_values = {
-      baseURL: BASE_URL_DEV,
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        // "Authorization" : "Bearer " + userValues.access
-        },
-        // params: {user: userValues.user.user}
-      }
+    baseURL: BASE_URL_DEV,
+    // headers: {
+    //     'Content-Type': 'application/json',
+    //     },
+    }
 
     const data = {
         username: form.email,
@@ -35,27 +34,25 @@ function Login(){
             // console.log(res.data.user);
             // ----------------------------------------------------------------
             
-              localStorage.setItem("auth", JSON.stringify({
+            localStorage.setItem("auth", JSON.stringify({
                 access: res.data.access,
                 refresh: res.data.refresh,
                 user: res.data.user,
-              }))
-            //   updateUserOnlineStatus(true)
-              navigate("/")
+            }))
+            updateUserOnlineStatus(true)
+            console.log("run after user login -------------")
+            navigate("/home/")
             // ----------------------------------------------------------------
         })
         .catch((err) => {
-            // console.log(err.request.data.error)
+            console.log(err.request.data.error)
         })
     }
-    // console.log(errors.error.error)
-    // console.log(data);
 
     return (
         <>
-        {/* <   Header /> */}
+        <Header />
         <div className="p-6">
-            {/* <h1>LandingMobilejsjs</h1> */}
             <div className="flex flex-wrap lg:flex-nowrap justify-between bg-gray-50 px-24">
                 <div className="m-2">
                     {/* -------------------------col one----------------------- */}

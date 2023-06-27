@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
+import Header from "../../components/desktop/header";
 
 
 function SignUp(){
@@ -60,6 +61,7 @@ const send_form = () => {
     return (
        
        <>
+       <Header />
         <div className="bg-gray-100">
         <div className="container mx-auto py-8">
           <h1 className="text-2xl font-bold mb-6 text-center">Sign Up</h1>

@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect } from "react";
 // import Layout from "./pages/Layout";
 // import Home from "./pages/Home";
@@ -13,6 +13,7 @@ import Mobile from "./layout/mobile";
 import Home from "./pages/desktop/home";
 import Login from "./pages/auth/login";
 import UserProfile from "./pages/userprofile/desktop/userProfileDetails";
+// import CheckUserLoginStatus from "./pages/auth/checkLoginStatus";
 
 function AllRouters() {
     const isDesktopOrLaptop = useMediaQuery({query: '(min-width: 768px)'})
@@ -34,11 +35,12 @@ function AllRouters() {
 
   let desktop = <BrowserRouter>
                   <Routes>
-                    <Route path="/" element={ <Desktop /> } >
-                        <Route index element={<Home />} />
-                        <Route path="signup" element={<SignUp />} />
-                        <Route path="login" element={<Login />} />
-                        <Route path="profile" element={<UserProfile />} />
+                    <Route path="login" element={<Login />} />
+                    <Route path="signup" element={<SignUp />} />
+                    <Route path="/" element={  <Desktop /> } >
+                        <Route index element={<Home />  } />
+                        <Route path="home" element={ <Home /> } />
+                        {/* <Route path="profile" element={CheckUserLoginStatus() ===true ? <UserProfile /> : <Navigate to="/login/" /> } /> */}
                         {/* 
                         <Route path="blogs" element={<Blogs />} />
                         <Route path="blogs" element={<Blogs />} />

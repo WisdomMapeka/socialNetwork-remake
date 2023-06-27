@@ -1,11 +1,11 @@
-import { Outlet, Link , useNavigate} from "react-router-dom";
+import { Outlet, Link , useNavigate, Navigate} from "react-router-dom";
 import {AiOutlineHome} from "react-icons/ai";
 import {BiLogIn} from "react-icons/bi";
 import { BiLogOut } from "react-icons/bi";
 import {HiInbox} from "react-icons/hi";
 import Logout from "../../pages/auth/logout";
+import CheckUserLoginStatus from "../../pages/auth/checkLoginStatus";
 // import MenuUserInformation from "./MenuUserInformation";
-// import {CheckUserLoginStatus, Logout} from "../utils";
 
 
 function Header () {
@@ -22,9 +22,15 @@ function Header () {
                             <ul className="flex">
                                 <li className="p-2 border-r"><Link to="/">Home<AiOutlineHome className='inline-block ml-2' /></Link></li>
                                 <li className="p-2 border-r">Inbox<HiInbox className='inline-block ml-2' /></li>
+                                
+                                {CheckUserLoginStatus() === true ? "" : 
                                 <li className="p-2 border-r"><Link to="/login">Login<BiLogIn className='inline-block ml-2' /></Link></li>
-                                <li className="p-2 border-r"><Logout /></li>
-                                <li className="p-2 border-r"><Link to="/signup">Signup</Link></li>                            
+                                }
+                                <Logout /> 
+
+                                {CheckUserLoginStatus() === true ? "" : 
+                                <li className="p-2 border-r"><Link to="/signup">Signup</Link></li>  
+                                }                          
                             </ul>
                         </div>
                     </div>

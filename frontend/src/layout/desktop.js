@@ -1,5 +1,6 @@
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, Navigate } from "react-router-dom";
 import Header from "../components/desktop/header";
+import CheckUserLoginStatus from "../pages/auth/checkLoginStatus";
 
 
 /*
@@ -9,15 +10,14 @@ media querries will be displayed on the outlet section.
 The router and the media querries are inside the router.js file , and the app.js file
 */
 function Desktop(){
-    return (
-        <div className="desktop-container">
-            <div>
-                <Header />
-            </div>
-            < Outlet />
-            <div>Footer</div>
-        </div>
-    )
+    let UIdata =  <div className="desktop-container">
+                        <div>
+                            <Header />
+                        </div>
+                        < Outlet />
+                        <div>Footer</div>
+                    </div>
+    return CheckUserLoginStatus() === true ? UIdata : <Navigate to="/login" />
 }
 
 

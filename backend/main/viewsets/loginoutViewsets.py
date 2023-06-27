@@ -11,6 +11,42 @@ import os
 from django.views.decorators.csrf import csrf_exempt
 
 
+"""
+******DATA EXPECTED
+{
+    "username": type(string),
+    "password":type(string)
+}
+
+******DATA RETURNED EXAMPLE
+
+This data combined the data from the built in user model and the UserProfile model.
+So there are two IDs. One is for the userprofile data and the other is for the actual
+user model. The   "user": 58 is the true id of the user model. The other is for the user profile.
+
+
+{
+    "username": "wiz2",
+    "email": "aasssss@gmail.com",
+    "first_name": "wisdom2",
+    "last_name": "2",
+    "user": 58,
+    "id": 42,
+    "profile_picture": "http://localhost:8000/media/userpictures/defaultUser-blue.png",
+    "location": "Notset",
+    "dob": null,
+    "religion": "Notset",
+    "hobbies": "Notset",
+    "whastapp_no": null,
+    "calls_no": null,
+    "description": "Notset",
+    "comments_on_off": false,
+    "restrict_comments": 0,
+    "is_online": false,
+    "date_created": "2023-06-21T09:06:36.038089Z"
+}
+
+"""
 
 # --------Register User View -----------------------
 class LoginView(viewsets.ModelViewSet):
