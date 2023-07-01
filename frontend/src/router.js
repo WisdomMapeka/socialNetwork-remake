@@ -13,6 +13,7 @@ import Mobile from "./layout/mobile";
 import Home from "./pages/desktop/home";
 import Login from "./pages/auth/login";
 import UserProfile from "./pages/userprofile/desktop/userProfileDetails";
+import Chat from "./pages/chat/largeSizeChat";
 // import CheckUserLoginStatus from "./pages/auth/checkLoginStatus";
 
 function AllRouters() {
@@ -40,7 +41,8 @@ function AllRouters() {
                     <Route path="/" element={  <Desktop /> } >
                         <Route index element={<Home />  } />
                         <Route path="home" element={ <Home /> } />
-                        {/* <Route path="profile" element={CheckUserLoginStatus() ===true ? <UserProfile /> : <Navigate to="/login/" /> } /> */}
+                        <Route path="profile" element={ <UserProfile />  } />
+                        <Route path="chat" element={<Chat />} />
                         {/* 
                         <Route path="blogs" element={<Blogs />} />
                         <Route path="blogs" element={<Blogs />} />

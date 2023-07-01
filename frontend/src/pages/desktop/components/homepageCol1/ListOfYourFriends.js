@@ -7,12 +7,15 @@ import axios from 'axios';
 
 
 function FriendDropDown(props){ 
-  // let userValues = getAccessRfreshUserValues();
   const selectedUser = props.data;
   const navigate = useNavigate()
+  
+  let loginUser = JSON.parse(localStorage.getItem("auth")).user
+  let chatpersons = {chatStarter:loginUser, chatReceiver:props.data.user}
+  localStorage.setItem("chatpersons", JSON.stringify(chatpersons))
 
   const handleChat = () => {
-    console.log("handleChat Run")
+    navigate("/chat/")
   } 
   
   return (
@@ -41,7 +44,7 @@ function ListOfYourFriends() {
 
 
   let BASE_URL_DEV = process.env.REACT_APP_BASE_URL_DEV;
-  console.log(BASE_URL_DEV)
+  // console.log(BASE_URL_DEV)
 
   let  header_values = {
     baseURL: BASE_URL_DEV,
@@ -78,8 +81,8 @@ function ListOfYourFriends() {
     }
   }
 
-  console.log(show)
-  console.log(user)
+  // console.log(show)
+  // console.log(user)
 
 //  console.log(friendlistdata)
   return (

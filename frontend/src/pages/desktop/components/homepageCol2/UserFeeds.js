@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { data } from './mockData';
-import { getAccessRfreshUserValues } from '../utils';
-import { refreshAccessToken } from '../utils';
+// import { data } from './mockData';
+import { getAccessRfreshUserValues } from '../../../../utils';
+import { refreshAccessToken } from '../../../../utils';
 import axios from 'axios';
+import globalVariables from '../../../../data/globalVariables';
 
 function ImageFile(props){
   const[imgerror, setImgerror] = useState(false);
@@ -24,14 +25,14 @@ function  UserFeeds() {
   const[postdata, setPostdata] = useState({});
 
   
-  let BASE_URL_DEV = process.env.REACT_APP_ASE_URL_DEV;
+  // let BASE_URL_DEV = process.env.REACT_APP_ASE_URL_DEV;
+  let BASE_URL_DEV = globalVariables.BASE_URL_DEV
 
   let  header_values = {
     baseURL: BASE_URL_DEV,
     headers: {
       'Content-Type': 'application/json',
-      // 'Accept': 'application/json',
-      "Authorization" : "Bearer " + userValues.access
+      // "Authorization" : "Bearer " + userValues.access
       }
     }
 
@@ -41,7 +42,7 @@ function  UserFeeds() {
       // -------------------------
         () => {
           axios.get("/posts/", header_values)
-          .then((res) => {setPostdata(res.data.post)})
+          .then((res) => {setPostdata(res.data.posts)})
           .catch((err) => {
                   // console.log(err.request)
                   refreshAccessToken()
@@ -71,11 +72,11 @@ function  UserFeeds() {
             <div key={item.id} className='w-full p-2 mt-3 shadow bg-white cursor-pointer hover:scale-105 ease-in-out duration-300'>
                 <div className='flex my-4 '>
                     <div className='h-[50px] w-[50px] flex items-center justify-center rounded-[50px] border border-solid border-gray-900 p-0 overflow-hidden bg-green-700'>
-                        <img src={item.user.profile_picture} alt='/' className='h-[45px] w-[45px]  rounded-[45px]'/>
+                        <img src={item.created_by.profile_picture} alt='/' className='h-[45px] w-[45px]  rounded-[45px]'/>
                     </div>
                     <div className='flex flex-col ml-3'>
-                        <span>{item.user.first_name + " " + item.user.last_name} {cleanDate(item.date_created)}</span>
-                        <span className='text-xs'>{item.user.location}</span>
+                        <span>{item.created_by.first_name + " " + item.created_by.last_name} {cleanDate(item.date_created)}</span>
+                        <span className='text-xs'>{item.created_by.location}</span>
                     </div>
                 </div>
                 <div className='w-full overflow-hidden rounded-xl'>

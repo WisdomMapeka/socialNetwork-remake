@@ -16,7 +16,7 @@ function RecommendedPeopleSlider() {
 
   let BASE_URL_DEV = process.env.REACT_APP_BASE_URL_DEV
   let  header_values = {baseURL: BASE_URL_DEV,}
-  console.log(BASE_URL_DEV)
+  // console.log(BASE_URL_DEV)
 
   const sendFriendRequest = () =>{
 

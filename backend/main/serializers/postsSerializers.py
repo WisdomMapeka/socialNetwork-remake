@@ -14,7 +14,8 @@ class PostSerializer(serializers.ModelSerializer):
         rep = super().to_representation(instance)
         user = User.objects.get(id=rep["created_by"])
         if user.is_staff==True:
-            pass
+            admin_name = "Admin "+user.username
+            rep["created_by"] = admin_name
         else:
             user_data = SignupSerializer(user)
             returned_data = user_data.data

@@ -99,13 +99,3 @@ class Repplies(CommonFields):
             return self.id
     
 
-
-class Messages(models.Model):
-    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_messages', null=True)
-    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_messages', null=True)
-    message = models.TextField(blank=True, null=True)
-    pic = models.ImageField(null=True, blank=True, upload_to="messagesPictures/")
-    opened = models.BooleanField(default=False)
-    date_created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
-    likes = models.IntegerField(default=0)
-    dislikes = models.IntegerField(default=0)

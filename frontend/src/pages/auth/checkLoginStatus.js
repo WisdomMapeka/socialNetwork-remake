@@ -11,7 +11,7 @@ import React, { useState, useEffect, useRef } from 'react';
 
 
 function CheckUserLoginStatus(){
-  console.log("CheckuserLoginstatus run");
+  // console.log("CheckuserLoginstatus run");
   try {
     const data = JSON.parse(localStorage.getItem("auth"))  ;
     if (data.user !== null){

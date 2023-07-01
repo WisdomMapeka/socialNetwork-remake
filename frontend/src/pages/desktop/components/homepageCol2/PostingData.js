@@ -51,7 +51,7 @@ function PostingData(){
         headers: {
             "Content-Type": "multipart/form-data",
             'Accept': 'application/json',
-            "Authorization" : "Bearer " + userValues.access
+            // "Authorization" : "Bearer " + userValues.access
             },
         }
     // create form data ------------------------
