@@ -33,6 +33,8 @@ class Messages(models.Model):
     receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_messages', null=True)
     message = models.TextField(blank=True, null=True)
     pic = models.ImageField(null=True, blank=True, upload_to="messagesPictures/")
+    is_pic = models.BooleanField(default=False)
+    # pic = models.BinaryField(null=True, blank=True)
     roomchatID = models.ForeignKey(ChatIDS, on_delete=models.CASCADE, null=True, blank=True)
     opened = models.BooleanField(default=False)
     date_created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
@@ -40,4 +42,7 @@ class Messages(models.Model):
     dislikes = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.message
+        if self.is_pic == True:
+            return str(self.id)
+        else:
+            return self.message

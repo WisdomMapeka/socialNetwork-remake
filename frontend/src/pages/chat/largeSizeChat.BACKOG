@@ -1,0 +1,72 @@
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { w3cwebsocket as W3CWebSocket } from "websocket";
+import globalVariables from '../../data/globalVariables';
+
+
+let BASE_URL_DEV = globalVariables.BASE_URL_DEV
+function Chat() {
+    const [messages, setMessages] = useState([]);
+    const [message, setMessage] = useState({});
+    let chatpersons = JSON.parse(localStorage.getItem("chatpersons"))
+
+    let roomChatID = chatpersons.chatid
+ 
+    
+    
+    
+    useEffect(
+      () => {
+        let client = new W3CWebSocket('ws://localhost:8000/ws/chat/'+roomChatID+'/'); 
+        client.onopen = () => {
+          console.log('WebSocket Client Connected');
+          };
+          client.onmessage = (message) => {
+          const messageObject = JSON.parse(message.data);
+          setMessages([...messages, messageObject]);
+          };
+      }, []
+    )
+   
+  
+      const  handleSendMessage = () => {
+      let client =  new W3CWebSocket('ws://localhost:8000/ws/chat/'+roomChatID+'/'); 
+
+        setTimeout(() => {console.log(client.readyState)}, 200)
+        client.onopen = () => {
+          console.log('WebSocket Client Connected');
+          };
+
+        console.log(client.readyState)
+       
+        setTimeout(() => {
+          try{
+              client.send(JSON.stringify({ message }))
+            } catch (error) {
+              console.log(error)
+            }
+        }, 200)
+  
+        
+          
+        
+        setMessage('');
+    };
+
+    console.log(messages)
+    
+
+  return (
+    <div>
+      <ul>
+        {messages.map((message, index) => (
+          <li key={index}>{message.message}</li>
+        ))}
+      </ul>
+      <input type="text" value={message} onChange={(event) => setMessage(event.target.value)} />
+      <button onClick={handleSendMessage}>Send</button>
+    </div>
+  );
+}
+
+export default Chat;

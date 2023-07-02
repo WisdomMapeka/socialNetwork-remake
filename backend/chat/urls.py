@@ -6,6 +6,7 @@ from rest_framework_simplejwt import views as jwt_views
 
 router = routers.DefaultRouter()
 router.register(r'checkchatid', checkchatid.CheckchatIdView,  'checkchatid')
+router.register(r'savemessagepic', savemessagePicViewsets.SaveMessagePicView, 'savemessagepic')
 
 
 urlpatterns = [

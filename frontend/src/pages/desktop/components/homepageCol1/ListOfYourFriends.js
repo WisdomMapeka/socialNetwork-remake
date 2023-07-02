@@ -4,14 +4,45 @@ import {RiMessengerLine} from 'react-icons/ri';
 // import { getAccessRfreshUserValues } from '../utils';
 // import { refreshAccessToken } from '../utils';
 import axios from 'axios';
+import globalVariables from '../../../../data/globalVariables';
+
+
+let BASE_URL_DEV = globalVariables.BASE_URL_DEV
+
 
 
 function FriendDropDown(props){ 
+  let[returnedchatid, SetReturnedChaiID] = useState("")
+  let loginUser = JSON.parse(localStorage.getItem("auth")).user
   const selectedUser = props.data;
   const navigate = useNavigate()
   
-  let loginUser = JSON.parse(localStorage.getItem("auth")).user
-  let chatpersons = {chatStarter:loginUser, chatReceiver:props.data.user}
+  // --------------------------------------------------------------------------------
+  const data = {
+    "starterID":loginUser.user,
+    "receiverID":props.data.user.user
+}
+
+let  header_values = {
+    baseURL: BASE_URL_DEV,
+    headers: {
+        "Content-Type": "multipart/form-data",
+        'Accept': 'application/json',
+        // "Authorization" : "Bearer " + userValues.access
+        },
+    }
+
+    axios.post("/checkchatid/", data, header_values)
+    .then((res) => {
+            SetReturnedChaiID(res.data)
+    })
+    .catch((err) => {
+        console.log(err.request.responseText)
+    })
+  // -------------------------------------------------------------------------------
+  
+  let chatpersons = {chatStarter:loginUser, chatReceiver:props.data.user, chatid:returnedchatid}
+  console.log(chatpersons)
   localStorage.setItem("chatpersons", JSON.stringify(chatpersons))
 
   const handleChat = () => {
