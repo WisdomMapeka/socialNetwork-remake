@@ -6,9 +6,15 @@ from channels.generic.websocket import WebsocketConsumer
 from django.db.utils import IntegrityError
 from django.core.serializers.json import DjangoJSONEncoder
 from django.contrib.auth.models import User
+from .serializers import SaveMessagePicSerializer
+from django.contrib.sites.models import Site
+
+
 
 
 class ChatConsumer(WebsocketConsumer):
+
+    
 
     def connect(self):
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
@@ -18,7 +24,7 @@ class ChatConsumer(WebsocketConsumer):
         try:
             ChatIDS.objects.create(chatid=self.room_group_name)
         except IntegrityError:
-            pass
+            chatid_instance = ChatIDS.objects.get(chatid=self.room_name)
         
         # Join room group
         async_to_sync(self.channel_layer.group_add)(
@@ -26,10 +32,16 @@ class ChatConsumer(WebsocketConsumer):
         )
         self.accept()
 
-        data = Messages.objects.all().values('id', 'message', 'pic', 'is_pic', 
+        data = Messages.objects.filter(roomchatID=chatid_instance).values('id', 'message', 'pic', 'is_pic', 
                                             'sender', 'receiver', 'date_created',
                                             'opened')
+        # this helps to get the full link of the image
+        for i in data:
+            if i["is_pic"] == True:
+                i["pic"] = self.image_full_link(i["pic"])
+    
         serialized_q = json.dumps(list(data), cls=DjangoJSONEncoder)
+
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name, {"type": "chat_message", "message": serialized_q}
         )
@@ -47,9 +59,14 @@ class ChatConsumer(WebsocketConsumer):
         message = text_data_json["message"]
         async_to_sync( self.save_message(message))
         # Send message to room group
-        data = Messages.objects.all().values('id', 'message', 'pic', 'is_pic', 
+        chatid_instance = ChatIDS.objects.get(chatid=self.room_name)
+        data = Messages.objects.filter(roomchatID=chatid_instance).values('id', 'message', 'pic', 'is_pic', 
                                             'sender', 'receiver', 'date_created',
                                             'opened')
+         # this helps to get the full link of the image
+        for i in data:
+            if i["is_pic"] == True:
+                i["pic"] = self.image_full_link(i["pic"])
         serialized_q = json.dumps(list(data), cls=DjangoJSONEncoder)
         async_to_sync(self.channel_layer.group_send)(
             # self.room_group_name, {"type": "chat_message", "message": message}
@@ -80,3 +97,7 @@ class ChatConsumer(WebsocketConsumer):
             )
         except KeyError:
             pass
+
+    def image_full_link(self, pic):
+        current_site = Site.objects.get_current()
+        return current_site.domain + "media/"+ pic

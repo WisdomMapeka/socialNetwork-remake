@@ -18,6 +18,12 @@ class SaveMessagePicView(viewsets.ModelViewSet):
     # permission_classes = (IsAuthenticated,)
     serializer_class = SaveMessagePicSerializer
     queryset =  Messages.objects.all()
+
+    # def list(self, request):
+    #     queryset = Post.objects.all().order_by("-date_created")
+    #     serializer = self.serializer_class(queryset, many=True, context={'request': request})
+    #     return Response({"posts":serializer.data})
+
     
     
     def create(self, request):

@@ -18,6 +18,17 @@ function EnlargedChatMessages(){
     let chatpersons = JSON.parse(localStorage.getItem("chatpersons"))
 
 
+
+   //  preview uploaded image
+   if (form.postpic !== "" && form.postpic !== undefined) {
+      var output = document.getElementById('post-img-output-preview');
+      output.src = URL.createObjectURL(form.postpic);
+      output.onload = function() {
+        URL.revokeObjectURL(output.src) 
+      }
+  }
+
+
     let roomChatID = chatpersons.chatid
    const inputFile = useRef(null);
    const navigate = useNavigate()
@@ -95,7 +106,7 @@ function EnlargedChatMessages(){
 
 
       // console.log(chatmessagesdata[0])
-      // chatmessagesdata[0].map((i) => console.log(i))
+      chatmessagesdata.length && chatmessagesdata[0].map((i) => console.log(i))
 
 
       // console.log(data)
@@ -128,8 +139,13 @@ function EnlargedChatMessages(){
          
          setForm('');
       };
-
-  
+      
+      // this small code always keep the scroll line at the bottom when a message is sent
+      if (document.querySelector('#chat-messages-tab-big')) {
+         var messageBody = document.querySelector('#chat-messages-tab-big');
+         messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+      }
+      
       return (
          <>
             <div className="flex-1 my-3 p:2 sm:p-6 justify-between flex flex-col h-screen bg-white">
@@ -154,20 +170,36 @@ function EnlargedChatMessages(){
                      </div>
                   </div>
                </div>
-               <div id="chat-messages-tab-small" className="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
+               <div id="chat-messages-tab-big" className="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
                   {/* ------------chat messages loop start-------------------- */}
                  {chatmessagesdata.length && chatmessagesdata[0].map(
                    (mesage) => (
                    
-                        <div className="chat-message" key={mesage.id}>
-                          
-                           <div className="flex items-end justify-end">
-                              <div className="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 items-end">
-                                 <div><span className="px-4 py-2 rounded-lg inline-block rounded-br-none bg-blue-600 text-white ">{mesage.id}</span></div>
-                              </div>
-                              <img src= "" alt="" className="w-6 h-6 rounded-full order-2" />
-                           </div>
+                       <div className="chat-message" key={mesage.id}>
+                           {mesage.sender === chatParticipants.chatStarter.user ? 
                            
+                              
+                           <div className="flex items-end">
+                              {mesage.is_pic === true ? 
+                                 <div className="max-w-xl mx-2"><img src={mesage.pic} alt="" /></div>
+                              : 
+                              <div className="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start">
+                                 <div><span className="px-4 py-2 rounded-lg inline-block rounded-bl-none bg-gray-300 text-gray-600">{mesage.message}</span></div>
+                              </div>
+                              }
+                              <img src={chatParticipants.chatStarter.profile_picture} alt="" className="w-6 h-6 rounded-full order-2"/>
+                           </div> : 
+                           <div className="flex items-end justify-end">
+                              {mesage.is_pic === true ? 
+                                 <div className="max-w-xl mx-2"><img src={mesage.pic} alt="" /></div>
+                              : 
+                              <div className="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 items-end">
+                                 <div><span className="px-4 py-2 rounded-lg inline-block rounded-br-none bg-blue-600 text-white ">{mesage.message}</span></div>
+                              </div>
+                              }
+                              <img src={chatParticipants.chatReceiver.profile_picture} alt="" className="w-6 h-6 rounded-full order-2" />
+                           </div>
+                           }
                         </div>
              
                     ))}
