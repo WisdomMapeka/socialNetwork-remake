@@ -4,14 +4,9 @@ from rest_framework import viewsets
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser, FormParser
-from main.models import Post, UserProfile
 from django.contrib.auth.models import User
-from PIL import Image
-import io
-import PIL
-import sys
-from django.core.files.uploadedfile import InMemoryUploadedFile
-import os
+from chat.models import ChatIDS
+
 
 
 """
@@ -31,14 +26,22 @@ used as the default chatID forever. Depending on who started the chat.
 """
 class CheckchatIdView(viewsets.ModelViewSet):
     # permission_classes = (IsAuthenticated,)
-    queryset = Post.objects.all()
+    queryset = ChatIDS.objects.all()
 
     
     def create(self, request):
 
-        chatid1 = "starterid" + request.data["starterID"] + "sep" + "receiverid" + request.data["receiverID"]
-        chatid2 = "starterid" + request.data["receiverID"] + "sep" + "receiverid" + request.data["starterID"]
-        print(chatid1)
-        print(chatid2)
-        print(request.data)
-        return Response("starter44receiver55")
+        chatid1 = "starterid" + str(request.data["starterID"]) + "sep" + "receiverid" + str(request.data["receiverID"])
+        chatid2 = "starterid" + str(request.data["receiverID"]) + "sep" + "receiverid" + str(request.data["starterID"])
+
+        getchatid1 = ChatIDS.objects.filter(chatid=chatid1).exists()
+        getchatid2 = ChatIDS.objects.filter(chatid=chatid2).exists()
+
+
+        if getchatid1 == True:
+            return Response(chatid1)
+        elif getchatid2 == True:
+            return Response(chatid2)
+        elif getchatid1 == False and getchatid2 == False:
+            return Response(chatid1) 
+        return Response(chatid1)

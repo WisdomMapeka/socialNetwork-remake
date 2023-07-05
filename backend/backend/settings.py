@@ -178,7 +178,7 @@ REST_FRAMEWORK = {
 
 
 # channels 
-ASGI_APPLICATION = "backend.asgi.application"
+
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
@@ -187,3 +187,4 @@ CHANNEL_LAYERS = {
         },
     },
 }
+ASGI_APPLICATION = "backend.asgi.application"

@@ -14,15 +14,21 @@ import sys
 from django.core.files.uploadedfile import InMemoryUploadedFile
 import os
 
+"""
+NOTES:
+This endpoint is used to save a picture in the chats, to reduce burdan on the sockets.
+It is also used to delete the messages in the chats.
+They might be more uses of it in the future
+"""
 class SaveMessagePicView(viewsets.ModelViewSet):
     # permission_classes = (IsAuthenticated,)
     serializer_class = SaveMessagePicSerializer
     queryset =  Messages.objects.all()
 
-    # def list(self, request):
-    #     queryset = Post.objects.all().order_by("-date_created")
-    #     serializer = self.serializer_class(queryset, many=True, context={'request': request})
-    #     return Response({"posts":serializer.data})
+    def delete(self, request):
+        message = Messages.objects.get(id=request.data["id"])
+        message.delete()
+        return Response("deleted")
 
     
     

@@ -13,9 +13,6 @@ from django.contrib.sites.models import Site
 
 
 class ChatConsumer(WebsocketConsumer):
-
-    
-
     def connect(self):
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_group_name = self.room_name
@@ -54,7 +51,7 @@ class ChatConsumer(WebsocketConsumer):
 
     # Receive message from WebSocket
     def receive(self, text_data):
-        print(text_data)
+        # print(text_data)
         text_data_json = json.loads(text_data)
         message = text_data_json["message"]
         async_to_sync( self.save_message(message))
@@ -80,9 +77,8 @@ class ChatConsumer(WebsocketConsumer):
         # Send message to WebSocket
         self.send(text_data=json.dumps({"message_response": message}))
 
-    # @database_sync_to_async
     def save_message(self, message):
-        print(message)
+        # print(message)
         sender = User.objects.get(id=message["sender"])
         receiver = User.objects.get(id=message["receiver"])
         chatid = ChatIDS.objects.get(chatid=self.room_group_name)
