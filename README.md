@@ -9,7 +9,7 @@ CREATING VIRTUAL ENV NORMAL WAY
 python3 -m venv socialnetworksite-env
 
 ACTIVATE VENV
--run the command in the folder S24PROJECT on terminal
+-run the command in the folder PROJECT on terminal
 source socialnetworksite-env/bin/activate
 
 on windows
@@ -50,7 +50,7 @@ CREATE USER wiz WITH PASSWORD  'xxxxxxx;
 ALTER ROLE wiz SET client_encoding TO 'utf8';
 ALTER ROLE wiz SET default_transaction_isolation TO 'read committed';
 ALTER ROLE wiz SET timezone TO 'UTC';
-GRANT ALL PRIVILEGES ON DATABASE xxx TO wiz;
+GRANT ALL PRIVILEGES ON DATABASE xxx TO user;
 
 
 . . .
@@ -59,7 +59,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': '',
-        'USER': 'wiz',
+        'USER': '',
         'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '',
@@ -100,7 +100,7 @@ sudo -u wiz psql xxxxuser
 createdb xxx
 CREATE DATABASE xxxx;
 sudo -u postgres psql -c 'create database xxx;'
-sudo -u postgres psql -c 'grant all privileges on database xxxx to wiz;'
+sudo -u postgres psql -c 'grant all privileges on database xxxx to user;'
 
 -delete database 
 dropdb xxxx
@@ -341,8 +341,8 @@ sudo service redis-server  {start|stop|restart|force-reload|status}
 ----------------------------------------------------------
 ADDITIONAL LINUX COMMANDS
 
--copy a .env fle to /wmecreativesnew/wmecreativesnew folder on the server
-scp .env wiz@{SERVER IP}:~/wmecreativesnew/wmecreativesnew
+-copy a .env fle to /foldername/subfolder folder on the server
+scp .env userxxx@{SERVER IP}:~/foldername/subfolder
 
 -config file is in /etc/
 
