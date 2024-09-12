@@ -45,11 +45,11 @@ postgresql 12
 sudo -u postgres psql -p 5433
 
 CREATE DATABASE xxxx;
-CREATE USER wiz WITH PASSWORD  'xxxxxxx;
+CREATE USER xxx WITH PASSWORD  'xxxxxxx;
 
-ALTER ROLE wiz SET client_encoding TO 'utf8';
-ALTER ROLE wiz SET default_transaction_isolation TO 'read committed';
-ALTER ROLE wiz SET timezone TO 'UTC';
+ALTER ROLE xxx SET client_encoding TO 'utf8';
+ALTER ROLE xxx SET default_transaction_isolation TO 'read committed';
+ALTER ROLE xxx SET timezone TO 'UTC';
 GRANT ALL PRIVILEGES ON DATABASE xxx TO user;
 
 
